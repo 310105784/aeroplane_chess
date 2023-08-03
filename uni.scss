@@ -1,0 +1,18 @@
+/* 颜色变量 */
+
+/* 背景相关颜色 */
+$uni-bg: #1e1e2a;
+$uni-color: #d3d3d3;
+
+
+/* header */
+.cless_header{
+	@import url('@/static/font/alimama/shuhei/index.css');
+	width: 100%;
+	height: 140rpx;
+	font-size: 40rpx;
+	color: white;
+	font-family: '阿里妈妈数黑体 Bold';
+	font-weight: bold;
+	color: #d3d3d3;
+}

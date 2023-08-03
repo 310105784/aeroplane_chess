@@ -1,0 +1,6 @@
+	@font-face {
+	  font-family: "阿里妈妈数黑体 Bold";
+	  src: url("@/static/font/alimama/shuhei/QDr2qTcCkWYf.woff2") format("woff2"),
+	  url("@/static/font/alimama/shuhei/QDr2qTcCkWYf.woff") format("woff");
+	  font-display: swap;
+	}
