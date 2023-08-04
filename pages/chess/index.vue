@@ -4,8 +4,10 @@
 			<Header :title="headerTitle"></Header>
 		</view>
 		<view class="chess-container">
-			<img data-v-10a9785c="" id="boy" src="https://cdn.edeng.love/img/man.870ce025.png" alt="">
-			<img data-v-10a9785c="" id="girl" src="https://cdn.edeng.love/img/woman.4163fe53.png" alt="">
+			<img id="boy" src="https://cdn.edeng.love/img/man.870ce025.png"
+				:style="`top:${gamePersons[0].top}%;left:${gamePersons[0].left}%;`">
+			<img id="girl" src="https://cdn.edeng.love/img/woman.4163fe53.png"
+				:style="`top:${gamePersons[1].top}%;left:${gamePersons[1].left}%;`">
 			<view class="chess-container-top">
 				<view class="chess-plank-top-bottom" v-for="num in [1,2,3,4,5,6]" :key="num">
 					<view class="chess">
@@ -37,7 +39,7 @@
 					</view>
 				</view>
 				<view class="dice-container">
-					<img src="@/static/images/dices/dice1.gif" @click="handleDiceClick()">
+					<img :src="dices[dice].gifUrl" @click="handleDiceClick()">
 				</view>
 			</view>
 			<view class="chess-container-bottom">
@@ -64,12 +66,90 @@
 		},
 		data() {
 			return {
-				headerTitle: ''
+				headerTitle: '',
+				dice: 0,
+				dices: [{
+						stepNum: 1,
+						gifUrl: require('@/static/images/dices/dice1.gif')
+					},
+					{
+						stepNum: 2,
+						gifUrl: require('@/static/images/dices/dice2.gif')
+					},
+					{
+						stepNum: 3,
+						gifUrl: require('@/static/images/dices/dice3.gif')
+					},
+					{
+						stepNum: 4,
+						gifUrl: require('@/static/images/dices/dice4.gif')
+					},
+					{
+						stepNum: 5,
+						gifUrl: require('@/static/images/dices/dice5.gif')
+					},
+					{
+						stepNum: 6,
+						gifUrl: require('@/static/images/dices/dice6.gif')
+					},
+				],
+				current: 0,
+				gamePersons: [{
+						top: 5,
+						left: 85
+					},
+					{
+						top: 5,
+						left: 85
+					}
+				]
 			}
 		},
 		methods: {
-			handleDiceClick() {
+			randomDice() {
+				return Math.floor(Math.random() * 6)
+			},
+			setDice() {
+				let dice = this.dice
+				do {
+					dice = this.randomDice()
+				} while (dice == this.dice)
+				this.dice = dice
+			},
+			setChess(dice, dices) {
+				let that = this
+				console.log("步数", dices[dice].stepNum);
+				for (var i = 0; i < dices[dice].stepNum; i++) {
+					(function(index) {
+						setTimeout(() => {
+							let left = that.gamePersons[that.current].left;
+							let top = that.gamePersons[that.current].top;
+							if ((left <= 85 && left != 15) && top == 5){
+								// 右上角
+								that.gamePersons[that.current].left = left - 14
+							} else if(left <= 15 && (top >= 5 && top != 95)){
+								// 左上角
+								that.gamePersons[that.current].top = top + 10
+							} else if((left >= 15 && left != 85) && top == 95){
+								// 左下角
+								that.gamePersons[that.current].left = left + 14
+							} else if(left == 85 && top <= 95){
+								// 右下角
+								that.gamePersons[that.current].top = top - 10
+							}
+						}, 600 * i)
+					})(i);
+				}
 				
+				
+				
+			},
+			handleDiceClick() {
+				this.setDice()
+				setTimeout(() => {
+					this.setChess(this.dice, this.dices)
+				}, 1000)
+
 			}
 		}
 	}
@@ -85,8 +165,6 @@
 			width: 10%;
 			position: absolute;
 			z-index: 99;
-			top: 5.2%;
-			left: 84.8%;
 			transform: translate(-50%, -50%);
 			transition: all .4s cubic-bezier(.25, 1, .3, 1);
 		}
