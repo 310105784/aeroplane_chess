@@ -3,7 +3,7 @@
 		<view class="header">
 			<text>Couple's game</text>
 			<view class="user">
-				<img src="@/static/images/user.png">
+				<uni-icons type="contact" size="40" color="#ffffff"></uni-icons>
 			</view>
 		</view>
 		<view class="cless-type-container">
@@ -15,18 +15,15 @@
 					</swiper-item>
 				</swiper>
 			</view>
-			<!-- <view class="operstion-type-wrap">
-				<view class="operstion-type-item" v-for="(operstion, i) in operations" :key="i"
-					:style="`background-color:${operstion.backgroundColor};`">{{operstion.title}}</view>
-			</view> -->
 			<view class="cless-type-wrap">
 				<view class="cless-type-item" v-for="(chessType, i) in chessTypes" :key="i"
 					@click="handleChessTypeClick(chessType)">
-					<view class="hot" v-if="chessType.isHot">HOT</view>
+					<view class="tag" v-if="chessType.isHot">HOT</view>
+					<view class="tag" v-if="chessType.isNew">NEW</view>
 					<text class="cless-type-item-text">{{chessType.title}}</text>
 					<view class="cless-type-item-lock">
-						<img v-if="chessType.isLock" src="@/static/images/chess_item_lock.png">
-						<img v-else src="@/static/images/chess_item_open.png">
+						<image v-if="chessType.isLock" src="@/static/images/chess_item_lock.png">
+						<image v-else src="@/static/images/chess_item_open.png">
 					</view>
 				</view>
 			</view>
@@ -42,68 +39,53 @@
 			return {
 				// 轮播图图片
 				background: [
-					'https://cdn.pixabay.com/photo/2023/05/27/16/08/flowers-8021795_1280.jpg',
-					'https://cdn.pixabay.com/photo/2023/05/27/16/08/flowers-8021795_1280.jpg',
-					'https://cdn.pixabay.com/photo/2023/05/27/16/08/flowers-8021795_1280.jpg'
-				],
-				// 操作类型入口
-				operations: [{
-						title: '嘿嘿卡',
-						url: '',
-						backgroundColor: '#5267d1'
-					},
-					{
-						title: '小本本',
-						url: '',
-						backgroundColor: '#41ab48'
-					},
-					{
-						title: '嘿嘿卡',
-						url: '',
-						backgroundColor: '#c78544'
-					}
+					'https://i.niupic.com/images/2023/08/08/bA4K.jpg'
 				],
 				// 游戏类型
 				chessTypes: [{
+					id: 0,
+					title: '真心话大冒险',
+					url: '/pages/truthOrDare/index',
+					isNew: true
+				}, {
 					id: 1,
 					title: '😉 基础模式',
-					url: '',
-					backgroundColor: '#5267d1',
-					isHot: false,
-					isLock: false
+					url: '/pages/chess/index',
 				}, {
 					id: 2,
 					title: '💞 恋爱模式',
-					url: '',
-					backgroundColor: '#41ab48',
+					url: '/pages/chess/index',
 					isHot: true,
 					isLock: true
 				}, {
 					id: 3,
 					title: '🧑🏻‍❤️‍🧑🏻 情侣模式',
-					url: '',
-					backgroundColor: '#c78544',
+					url: '/pages/chess/index',
 					isHot: true,
 					isLock: true
 				}, {
 					id: 4,
 					title: '💝️ 高级模式',
-					url: '',
-					backgroundColor: '#b041b0',
+					url: '/pages/chess/index',
 					isHot: true,
 					isLock: true
 				}, {
 					id: 5,
 					title: '🔞️ 羞羞模式',
-					url: '',
-					backgroundColor: '#b041b0',
+					url: '/pages/chess/index',
+					isHot: true,
+					isLock: true
+				}, {
+					id: 6,
+					title: '🔞️ 羞羞高级模式',
+					url: '/pages/chess/index',
 					isHot: true,
 					isLock: true
 				}]
 			}
 		},
 		onLoad() {
-				//http://cdn.edeng.love/
+			//http://cdn.edeng.love/
 		},
 		methods: {
 			// 点击游戏类型
@@ -117,7 +99,7 @@
 					return;
 				}
 				uni.navigateTo({
-					url: '/pages/chess/index',
+					url: chessType.url,
 					success(res) {
 						gameStore.set(chessType)
 					}
@@ -178,31 +160,6 @@
 			}
 		}
 
-		.operstion-type-wrap {
-			width: 100%;
-			height: 120rpx;
-			display: flex;
-			align-items: center;
-			justify-content: center;
-			margin-top: 50rpx;
-
-			.operstion-type-item {
-				width: 100%;
-				height: 100%;
-				display: flex;
-				align-items: center;
-				justify-content: center;
-				font-size: 35rpx;
-				font-weight: bold;
-				color: white;
-				margin-right: 10px;
-			}
-
-			.operstion-type-item:last-child {
-				margin-right: 0;
-			}
-		}
-
 		.cless-type-wrap {
 			width: 100%;
 			margin-top: 50rpx;
@@ -223,7 +180,7 @@
 				border-radius: 40rpx;
 				background-color: rgba(255, 255, 255, 0.3);
 
-				.hot {
+				.tag {
 					color: #fff;
 					padding: 20rpx 0 5rpx 0;
 					width: 121px;
@@ -231,7 +188,7 @@
 					font-size: 25rpx;
 					text-shadow: 4rpx 4rpx 8rpx rgba(0, 0, 0, .5);
 					font-weight: 700;
-					background: linear-gradient(90deg, #cb2b28, #a31f1c, #cb2b28);
+					background: linear-gradient(90deg, #f78ca0, #f9748f, #fd868c, #fe9a8b);
 					-webkit-transform: rotate(-50deg);
 					transform: rotate(-45deg);
 					position: absolute;
@@ -247,7 +204,7 @@
 				}
 
 				.cless-type-item-lock,
-				img {
+				uni-image {
 					width: 44rpx;
 					height: 44rpx;
 				}

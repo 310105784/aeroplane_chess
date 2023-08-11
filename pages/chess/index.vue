@@ -1,72 +1,79 @@
 <template>
 	<view>
 		<view>
-			<Header :title="headerTitle"></Header>
+			<Header :title="headerTitle" @header_renovate="header_renovate" :is-show-menu="false"></Header>
 		</view>
 		<view class="chess-container">
-			<img id="boy" src="https://cdn.edeng.love/img/man.870ce025.png"
+			<image id="boy" src="https://cdn.edeng.love/img/man.870ce025.png"
 				:style="`top:${gamePersons[0].top}%;left:${gamePersons[0].left}%;`">
-			<img id="girl" src="https://cdn.edeng.love/img/woman.4163fe53.png"
-				:style="`top:${gamePersons[1].top}%;left:${gamePersons[1].left}%;`">
-			<view class="chess-container-top">
-				<view class="chess-plank-top-bottom" v-for="num in [1,2,3,4,5,6]" :key="num">
-					<view class="chess">
-						<view class="chess-number">{{num}}</view>
-					</view>
-				</view>
-			</view>
-			<view class="chess-container-center">
-				<view class="chess-center-left">
-					<view class="chess-plank-center" v-for="num in [7,8,9,10,11,12,13,14]" :key="num">
-						<view class="chess">
-							<view class="chess-number">{{num}}</view>
+				<image id="girl" src="https://cdn.edeng.love/img/woman.4163fe53.png"
+					:style="`top:${gamePersons[1].top}%;left:${gamePersons[1].left}%;`">
+					<view class="chess-container-top">
+						<view class="chess-plank-top-bottom" v-for="num in [1,2,3,4,5,6]" :key="num">
+							<view class="chess" @click="handleModelOpen('任务', chessData[num])">
+								<view class="chess-number">{{num}}</view>
+							</view>
 						</view>
 					</view>
-				</view>
-				<view class="chess-center-right">
-					<view class="chess-plank-center" v-for="num in [28,27,26,25,24,23,22,21]" :key="num">
-						<view class="chess">
-							<view class="chess-number">{{num}}</view>
+					<view class="chess-container-center">
+						<view class="chess-center-left">
+							<view class="chess-plank-center" v-for="num in [7,8,9,10,11,12,13,14]" :key="num">
+								<view class="chess" @click="handleModelOpen('任务', chessData[num])">
+									<view class="chess-number">{{num}}</view>
+								</view>
+							</view>
+						</view>
+						<view class="chess-center-right">
+							<view class="chess-plank-center" v-for="num in [28,27,26,25,24,23,22,21]" :key="num">
+								<view class="chess" @click="handleModelOpen('任务', chessData[num])">
+									<view class="chess-number">{{num}}</view>
+								</view>
+							</view>
+						</view>
+						<view class="rule-container">
+							<view class="rule-title">游戏规则</view>
+							<view class="rule-content">
+								<span>1.摇色子自动走棋</span>
+								<span>2.每个格子都有任务,也可以自行写上执行其他任务</span>
+								<span>2.率先走到终点的一方,获得胜利</span>
+							</view>
+						</view>
+						<view class="dice-container">
+							<image :src="dices[dice].gifUrl" @click="handleDiceClick()">
 						</view>
 					</view>
-				</view>
-				<view class="rule-container">
-					<view class="rule-title">游戏规则</view>
-					<view class="rule-content">
-						<span>1.摇色子自动走棋</span>
-						<span>2.每个格子都有任务,也可以自行写上执行其他任务</span>
-						<span>2.率先走到终点的一方,获得胜利</span>
+					<view class="chess-container-bottom">
+						<view class="chess-plank-top-bottom" v-for="num in [15,16,17,18,19,20]" :key="num">
+							<view class="chess" @click="handleModelOpen('任务', chessData[num])">
+								<view class="chess-number">{{num}}</view>
+							</view>
+						</view>
 					</view>
-				</view>
-				<view class="dice-container">
-					<img :src="dices[dice].gifUrl" @click="handleDiceClick()">
-				</view>
-			</view>
-			<view class="chess-container-bottom">
-				<view class="chess-plank-top-bottom" v-for="num in [15,16,17,18,19,20]" :key="num">
-					<view class="chess">
-						<view class="chess-number">{{num}}</view>
-					</view>
-				</view>
-			</view>
 		</view>
+		<Model v-if="modelData.isShow" :title="modelData.title" :content="modelData.content"
+			@handleModelClone="handleModelClone"></Model>
 	</view>
 </template>
 
 <script>
 	import gameStore from '@/stores/gameStore.js'
-	import Header from '@/pages/chess/component/header.vue';
+	import Header from '@/pages/components/header.vue';
+	import Model from '@/pages/components/model.vue'
+	import taskData from '@/pages/taskData.json'
 
 	export default {
 		components: {
-			Header
+			Header,
+			Model
 		},
 		onLoad() {
 			this.headerTitle = gameStore.get().title
+			this.getTaskData(gameStore.get())
 		},
 		data() {
 			return {
 				headerTitle: '',
+				isGameIn: false,
 				dice: 0,
 				dices: [{
 						stepNum: 1,
@@ -96,18 +103,71 @@
 				current: 0,
 				gamePersons: [{
 						top: 5,
-						left: 85
+						left: 85,
+						index: 0
 					},
 					{
 						top: 5,
-						left: 85
+						left: 85,
+						index: 0
 					}
-				]
+				],
+				modelData: {
+					isShow: false,
+					title: '',
+					content: ''
+				},
+				chessData: [],
 			}
 		},
 		methods: {
+			getTaskData(gameData) {
+				if (gameData.id) {
+					let id = gameData.id
+					if (id == 1) {
+						this.chessData = taskData.data
+					} else if (id == 2) {
+						this.chessData = taskData.love
+					} else if (id == 3) {
+						this.chessData = taskData.coupleEdition
+					} else if (id == 4) {
+						this.chessData = taskData.senior
+					} else if (id == 5) {
+						this.chessData = taskData.privacy
+					} else if (id == 6) {
+						this.chessData = taskData.privacyAdvanced
+					}
+				}
+			},
+			header_renovate() {
+				let that = this
+				uni.showModal({
+					title: '提示',
+					content: '确定重新开始游戏吗？',
+					success: function(res) {
+						if (res.confirm) {
+							that.cz()
+						}
+					}
+				});
+			},
 			randomDice() {
 				return Math.floor(Math.random() * 6)
+			},
+			cz() {
+				this.dice = 0
+				this.current = 0
+				this.gamePersons = [{
+						top: 5,
+						left: 85,
+						index: 0
+					},
+					{
+						top: 5,
+						left: 85,
+						index: 0
+					}
+				]
 			},
 			setDice() {
 				let dice = this.dice
@@ -117,39 +177,83 @@
 				this.dice = dice
 			},
 			setChess(dice, dices) {
+				this.isGameIn = true
 				let that = this
-				console.log("步数", dices[dice].stepNum);
-				for (var i = 0; i < dices[dice].stepNum; i++) {
-					(function(index) {
-						setTimeout(() => {
-							let left = that.gamePersons[that.current].left;
-							let top = that.gamePersons[that.current].top;
-							if ((left <= 85 && left != 15) && top == 5){
-								// 右上角
-								that.gamePersons[that.current].left = left - 14
-							} else if(left <= 15 && (top >= 5 && top != 95)){
-								// 左上角
-								that.gamePersons[that.current].top = top + 10
-							} else if((left >= 15 && left != 85) && top == 95){
-								// 左下角
-								that.gamePersons[that.current].left = left + 14
-							} else if(left == 85 && top <= 95){
-								// 右下角
-								that.gamePersons[that.current].top = top - 10
-							}
-						}, 600 * i)
-					})(i);
+				let timeout = 600
+				let stepNum = dices[dice].stepNum
+				console.log("bushu", stepNum);
+
+				let number = 1
+				let timer = setInterval(() => {
+					let left = that.gamePersons[that.current].left;
+					let top = that.gamePersons[that.current].top;
+					that.gamePersons[that.current].index++
+					if ((left <= 85 && left != 15) && top == 5) {
+						// 右上角
+						that.gamePersons[that.current].left = left - 14
+					} else if (left <= 15 && (top >= 5 && top != 95)) {
+						// 左上角
+						that.gamePersons[that.current].top = top + 10
+					} else if ((left >= 15 && left != 85) && top == 95) {
+						// 左下角
+						that.gamePersons[that.current].left = left + 14
+					} else if (left == 85 && top <= 95) {
+						// 右下角
+						that.gamePersons[that.current].top = top - 10
+					}
+					// 判断是否到终点
+					if (that.gamePersons[that.current].left == 85 && that.gamePersons[that.current].top == 15) {
+						clearTimeout(timer)
+						that.cz()
+						uni.showToast({
+							title: '游戏结束',
+							icon: 'none',
+							duration: 3000
+						});
+					}
+					if (number >= stepNum) {
+						clearTimeout(timer)
+					}
+					number++
+				}, timeout)
+
+				if (this.current == 0) {
+					this.current = 1
+				} else {
+					this.current = 0
 				}
-				
-				
-				
+
+				setTimeout(() => {
+					this.modelData = {
+						isShow: true,
+						title: '任务',
+						content: this.chessData[that.gamePersons[that.current].index]
+					}
+					this.isGameIn = false
+				}, timeout * stepNum)
 			},
 			handleDiceClick() {
+				if (this.isGameIn) {
+					return
+				}
 				this.setDice()
 				setTimeout(() => {
 					this.setChess(this.dice, this.dices)
 				}, 1000)
-
+			},
+			handleModelOpen(title, content) {
+				this.modelData = {
+					isShow: true,
+					title: title,
+					content: content
+				}
+			},
+			handleModelClone() {
+				this.modelData = {
+					isShow: false,
+					title: '',
+					content: ''
+				}
 			}
 		}
 	}
@@ -163,6 +267,7 @@
 		#boy,
 		#girl {
 			width: 10%;
+			height: 6.5%;
 			position: absolute;
 			z-index: 99;
 			transform: translate(-50%, -50%);
@@ -245,8 +350,9 @@
 				align-items: center;
 				justify-content: center;
 
-				img {
+				image {
 					width: 50%;
+					height: 75%;
 				}
 			}
 
@@ -294,8 +400,8 @@
 			position: relative;
 			border-radius: 14rpx;
 			transition: all .5s linear;
-			box-shadow: 0 0.02667rem 0.16rem 0 hsla(0, 0%, 100%, .1);
-			background-image: linear-gradient(0deg, #ff9a9e 0, #fecfef 99%, #fecfef);
+			border: 1px solid #d3d3d3;
+			background-color: rgba(255, 255, 255, 0.3);
 
 			.chess-img {
 				position: absolute;

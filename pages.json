@@ -8,16 +8,30 @@
 			}
 		},
 		{
-			"path": "pages/chess/component/header",
+			"path": "pages/chess/index",
+			"style": {
+				"navigationBarTitleText": "飞行棋-游戏页",
+				"transparentTitle": "always"
+			}
+		}, {
+			"path": "pages/truthOrDare/index",
+			"style": {
+				"navigationBarTitleText": "真心话大冒险-首页",
+				"transparentTitle": "always"
+			}
+
+		},
+		{
+			"path": "pages/components/header",
 			"style": {
 				"navigationBarTitleText": "公共Header",
 				"transparentTitle": "always"
 			}
 		},
 		{
-			"path": "pages/chess/index",
+			"path": "pages/components/model",
 			"style": {
-				"navigationBarTitleText": "游戏页",
+				"navigationBarTitleText": "公共弹窗",
 				"transparentTitle": "always"
 			}
 		}
