@@ -14,8 +14,11 @@
 
 ## 📔配置
 ├─aeroplane_chess
+</br>
 │  ├─pages
+</br>
 │  │  │  gameConfig.json `游戏配置`
+</br>
 │  │  │  taskData.json  `游戏类型对应的数据`
 
 
