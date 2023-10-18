@@ -22,7 +22,7 @@
 
 ### 📒 文件说明
 - `gameConfig.json`
-``` json
+``` text
 {
     // 首页轮播图
     "background": [
@@ -30,25 +30,20 @@
     ],
     // 游戏类型
     "chessTypes": [{
-        游戏ID
-	"id": 1,
-        游戏名称
-	"title": "😉 基础模式",
-        游戏页面路由
-	"url": "/pages/chess/index",
-        对应taksData中的任务数据
-	"taskData": "love",
-        是否锁定
-	"isLock": false
+	"id": 1,    // 游戏ID
+	"title": "😉 基础模式",    // 游戏名称
+	"url": "/pages/chess/index",    // 游戏页面路由
+	"taskData": "love",    // 对应taksData中的任务数据
+	"isLock": false    //是否锁定
 	},
     ...
     ]
 }
 ```
 - `taskData.json`
-```json
+```text
 {
-    对应gameConfig.json游戏类型的taksData,可添加多个数据组
+    // 对应 gameConfig.json 游戏类型的 taksData ,可添加多个数据组
     "love": [
         "学猫叫三声",
         "一起恶搞自拍",
