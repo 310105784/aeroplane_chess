@@ -4,9 +4,9 @@
 			<Header :title="headerTitle" @header_renovate="header_renovate" :is-show-menu="false"></Header>
 		</view>
 		<view class="chess-container">
-			<image id="boy" src="https://cdn.edeng.love/img/man.870ce025.png"
+			<image id="boy" :src="require('@/static/images/man.png')"
 				:style="`top:${gamePersons[0].top}%;left:${gamePersons[0].left}%;`">
-				<image id="girl" src="https://cdn.edeng.love/img/woman.4163fe53.png"
+				<image id="girl" :src="require('@/static/images/woman.png')"
 					:style="`top:${gamePersons[1].top}%;left:${gamePersons[1].left}%;`">
 					<view class="chess-container-top">
 						<view class="chess-plank-top-bottom" v-for="num in [1,2,3,4,5,6]" :key="num">
@@ -122,21 +122,18 @@
 		},
 		methods: {
 			getTaskData(gameData) {
-				if (gameData.id) {
-					let id = gameData.id
-					if (id == 1) {
-						this.chessData = taskData.data
-					} else if (id == 2) {
-						this.chessData = taskData.love
-					} else if (id == 3) {
-						this.chessData = taskData.coupleEdition
-					} else if (id == 4) {
-						this.chessData = taskData.senior
-					} else if (id == 5) {
-						this.chessData = taskData.privacy
-					} else if (id == 6) {
-						this.chessData = taskData.privacyAdvanced
+				if (gameData.taskData) {
+					let data = taskData[gameData.taskData]
+					if (!data || data.length < 28) {
+						alert("数据量无法承载当前棋盘，请添加数据后重试！");
+						uni.redirectTo({
+							url: '/pages/index/index',
+							success() {
+								gameStore.remove()
+							}
+						});
 					}
+					this.chessData = this.shuffle(data)
 				}
 			},
 			header_renovate() {
@@ -168,6 +165,7 @@
 						index: 0
 					}
 				]
+				this.chessData = this.shuffle(this.chessData)
 			},
 			setDice() {
 				let dice = this.dice
@@ -254,6 +252,13 @@
 					title: '',
 					content: ''
 				}
+			},
+			shuffle(arr) {
+				for (let i = 0; i < arr.length; i++) {
+					const randomIndex = Math.round(Math.random() * (arr.length - 1 - i)) + i;
+					[arr[i], arr[randomIndex]] = [arr[randomIndex], arr[i]]
+				}
+				return arr
 			}
 		}
 	}

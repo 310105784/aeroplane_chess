@@ -13,14 +13,7 @@
 				"navigationBarTitleText": "飞行棋-游戏页",
 				"transparentTitle": "always"
 			}
-		}, {
-			"path": "pages/truthOrDare/index",
-			"style": {
-				"navigationBarTitleText": "真心话大冒险-首页",
-				"transparentTitle": "always"
-			}
-
-		},
+		}, 
 		{
 			"path": "pages/components/header",
 			"style": {

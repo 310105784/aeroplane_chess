@@ -33,59 +33,19 @@
 
 <script>
 	import gameStore from '@/stores/gameStore.js'
+	import gameConfig from '@/pages/gameConfig.json'
 
 	export default {
 		data() {
 			return {
 				// 轮播图图片
-				background: [
-					'https://i.niupic.com/images/2023/08/08/bA4K.jpg'
-				],
+				background: gameConfig.background,
 				// 游戏类型
-				chessTypes: [{
-					id: 0,
-					title: '真心话大冒险',
-					url: '/pages/truthOrDare/index',
-					isNew: true
-				}, {
-					id: 1,
-					title: '😉 基础模式',
-					url: '/pages/chess/index',
-				}, {
-					id: 2,
-					title: '💞 恋爱模式',
-					url: '/pages/chess/index',
-					isHot: true,
-					isLock: true
-				}, {
-					id: 3,
-					title: '🧑🏻‍❤️‍🧑🏻 情侣模式',
-					url: '/pages/chess/index',
-					isHot: true,
-					isLock: true
-				}, {
-					id: 4,
-					title: '💝️ 高级模式',
-					url: '/pages/chess/index',
-					isHot: true,
-					isLock: true
-				}, {
-					id: 5,
-					title: '🔞️ 羞羞模式',
-					url: '/pages/chess/index',
-					isHot: true,
-					isLock: true
-				}, {
-					id: 6,
-					title: '🔞️ 羞羞高级模式',
-					url: '/pages/chess/index',
-					isHot: true,
-					isLock: true
-				}]
+				chessTypes: gameConfig.chessTypes
 			}
 		},
 		onLoad() {
-			//http://cdn.edeng.love/
+			
 		},
 		methods: {
 			// 点击游戏类型
