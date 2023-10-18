@@ -31,12 +31,12 @@
     // 游戏类型
     "chessTypes": [
         {
-	    "id": 1,    // 游戏ID
-	    "title": "😉 基础模式",    // 游戏名称
-	    "url": "/pages/chess/index",    // 游戏页面路由
-	    "taskData": "love",    // 对应taksData中的任务数据
-	    "isLock": false    //是否锁定
-	},
+	        "id": 1,    // 游戏ID
+	        "title": "😉 基础模式",    // 游戏名称
+	        "url": "/pages/chess/index",    // 游戏页面路由
+	        "taskData": "love",    // 对应taksData中的任务数据
+	        "isLock": false    //是否锁定
+        },
     ...
     ]
 }
