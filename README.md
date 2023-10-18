@@ -26,7 +26,7 @@
 {
     // 首页轮播图
     "background": [
-	"https://i.niupic.com/images/2023/08/08/bA4K.jpg"
+	    "https://i.niupic.com/images/2023/08/08/bA4K.jpg"
     ],
     // 游戏类型
     "chessTypes": [
